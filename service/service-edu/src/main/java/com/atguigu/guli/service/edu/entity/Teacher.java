@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.atguigu.guli.service.base.model.BaseEntity;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -46,6 +47,8 @@ public class Teacher extends BaseEntity {
     private Integer sort;
 
     @ApiModelProperty(value = "入驻时间")
+    //统一返回的Json数据的时间格式
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date joinDate;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除", hidden = true)
