@@ -25,14 +25,11 @@ public class ApiTeacherController {
     @Autowired
     TeacherService teacherService;
 
-
-
     //1. 查询所有的讲师
     @GetMapping("/list")
     public List<Teacher> list(){
         List<Teacher> teachers = teacherService.list();
         return teachers;
     }
-
 }
 

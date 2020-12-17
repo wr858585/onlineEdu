@@ -1,4 +1,4 @@
-package com.atguigu.guli.service.edu.handler;
+package com.atguigu.guli.service.base.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

@@ -53,7 +53,8 @@ public class Teacher extends BaseEntity {
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除", hidden = true)
     //表示让deleted属性绑定到数据库中的deleted字段
-    @TableField("is_deleted")
+    @TableField("is_deleted") //注掉后报错！！可以测试我们写的异常处理类（service-base模块里的handler）
+    //@ApiModelProperty(hidden=true)：不影响查询结果，只影响swagger model中显示的结果会隐藏掉显不出
     @TableLogic
     private Boolean deleted;
 

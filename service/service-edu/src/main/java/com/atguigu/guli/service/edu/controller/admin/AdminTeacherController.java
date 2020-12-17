@@ -26,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin/edu/teacher")
+@CrossOrigin    //配置允许当前模块中的接口可以被跨域访问
 @Api(tags = "讲师管理模块")//描述controller的注解，会显示在swagger页面上
 public class AdminTeacherController {
 
