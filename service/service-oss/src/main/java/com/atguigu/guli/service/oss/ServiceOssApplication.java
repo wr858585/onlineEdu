@@ -3,6 +3,7 @@ package com.atguigu.guli.service.oss;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
 //因为service-oss依赖了service，service依赖了service-base，所以oss相当于import了base中所有的依赖
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @ComponentScan("com.atguigu.guli")
+@EnableDiscoveryClient
 public class ServiceOssApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceOssApplication.class,args);

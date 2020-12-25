@@ -34,6 +34,19 @@ public class FileController {
     @Autowired
     FileService fileService;
 
+    //3. 测试edu远程调用oss服务
+    @GetMapping("test")
+    @ApiOperation("测试feign远程调用")
+    public R testFeignToOss(String path){
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("edu服务远程调用了oss服务");
+        return R.ok().message("成功调用了oss");
+    }
+
     //1. 上传文件
     //参数1：上传文件表单对象
     //参数2：文件保存的模块说明
@@ -46,12 +59,10 @@ public class FileController {
     }
     //2. 根据文件的上传地址删除文件
     //intuition：删除讲师时，把其头像也删掉
+    @ApiOperation("文件删除功能")
     @DeleteMapping("/delete")
-    public R deleteFile(String filePath, String module){
-        int index = filePath.indexOf("/"+module);
-        //文件名=文件路径+文件原名
-        String objectName = filePath.substring(index+1);
-        //创建ossClient实例
-
+    public R deleteFile(@RequestParam String filePath, @RequestParam String module){
+        fileService.deleteFile(filePath,module);
+        return R.ok();
     }
 }

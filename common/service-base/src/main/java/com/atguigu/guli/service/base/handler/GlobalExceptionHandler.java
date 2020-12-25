@@ -1,5 +1,6 @@
 package com.atguigu.guli.service.base.handler;
 
+import com.atguigu.guli.service.base.exception.GuliException;
 import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.base.result.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,15 @@ public class GlobalExceptionHandler {
 //        e.printStackTrace();    //打印异常的堆栈信息
         log.error("异常为：${}", ExceptionUtils.getStackTrace(e));
         return R.error().message(e.getMessage());
+    }
+
+    //guli异常处理
+    @ExceptionHandler(GuliException.class)
+    @ResponseBody
+    public R exception(GuliException e){    //接收的异常（实参）必须和注解中声明要处理的异常类型一致
+//        e.printStackTrace();    //打印异常的堆栈信息
+        log.error("异常为：${}", ExceptionUtils.getStackTrace(e));
+        return R.error().code(e.getCode()).message(e.getMessage()).success(e.getSuccess());
     }
 
     //数据库异常处理

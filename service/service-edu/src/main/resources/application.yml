@@ -15,14 +15,33 @@ spring:
     url: jdbc:mysql://localhost:3306/sh0821-guli_edu?serverTimezone=GMT%2B8
     username: root
     password: root
-
+  cloud:
+    nacos:
+      #nacos注册中心地址
+      server-addr: localhost:8848
+    sentinel:
+      filter:
+        url-patterns: /**
+      eager: true   #积极加载：项目启动时会自动将本项目注册到sentinel控制台
+      transport:
+        port: 8081  #本项目和sentinel控制台数据交流时的端口号
+        dashboard: localhost:8080   #sentinel控制面板的地址
 #MP的日志
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-#设置日志输出级别为error：可选fatal（一般不用），error，warning，info（一般测试时用），debug（一般开发时用，可显示参数）
-#logging:
-#  level:
-#    com.atguigu.guli.service.edu.controller.ChapterController: debug
-#    root: error
+#设置ribbon远程调用超时时长
+ribbon:
+  ConnectTimeout: 10000 #连接建立的超时时长，默认1秒
+  ReadTimeout: 10000 #处理请求的超时时间，默认为1秒
+
+#openFeign的日志打印级别
+logging:
+  level:
+    com.atguigu.guli.service.edu.feign.OssFeignClient: debug
+
+#启用feign对sentinel的支持
+feign:
+  sentinel:
+    enabled: true

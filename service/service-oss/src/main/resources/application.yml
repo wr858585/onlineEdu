@@ -19,6 +19,17 @@ spring:
     active: dev # 环境设置：会影响logback-spring.xml中配置的日志输出的级别；也会影响nacos配置中心文件
   application:
     name: service-oss # 服务名
+  cloud:
+    nacos:
+      # nacos注册中心地址
+      server-addr: localhost:8848
+    sentinel:
+      filter:
+        url-patterns: /**
+      eager: true   #积极加载：项目启动时会自动将本项目注册到sentinel控制台
+      transport:
+        port: 8081  #本项目和sentinel控制台数据交流时的端口号
+        dashboard: localhost:8080   #sentinel控制面板的地址
 
 #设置日志输出级别为error：可选fatal（一般不用），error，warning，info（一般测试时用），debug（一般开发时用，可显示参数）
 #logging:

@@ -2,13 +2,16 @@ package com.atguigu.guli.service.edu.controller.admin;
 
 
 import com.atguigu.guli.service.base.result.R;
+import com.atguigu.guli.service.base.result.ResultCodeEnum;
 import com.atguigu.guli.service.edu.entity.Teacher;
 import com.atguigu.guli.service.edu.entity.query.TeacherQuery;
+import com.atguigu.guli.service.edu.feign.OssFeignClient;
 import com.atguigu.guli.service.edu.service.TeacherService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin/edu/teacher")
+@Slf4j
 @CrossOrigin    //配置允许当前模块中的接口可以被跨域访问
 @Api(tags = "讲师管理模块")//描述controller的注解，会显示在swagger页面上
 public class AdminTeacherController {
@@ -33,8 +37,36 @@ public class AdminTeacherController {
     @Autowired
     TeacherService teacherService;
 
+    //正是因为我们在edu模块中写了OssFeignClient接口，这里才能自动注入容器，否则不可能去注入其他服务/模块的东西！
+    @Autowired
+    OssFeignClient ossFeignClient;
+
+    //9. 测试edu调用oss
+    @GetMapping("test")
+    public R testFeignToOss(String path){
+        ossFeignClient.testFeignToOss(path);
+        return R.ok();
+    }
+
+    //8. 批量删除
+    //参数提交的方式1：url?id=1&id=2，比较麻烦因为需要用原生的request对象来获取参数
+    //参数提交的方式2：url?id=1,2,3,4，后端springmvc可以直接使用list集合接收多个id参数
+    //springmvc使用集合接收参数，必须添加注解@RequestParam（如果以json形式接收，加@RequestBody）
+    @DeleteMapping("batchDel")
+    public R batchDelTeachers(@RequestParam List<String> ids){
+        //测试代码
+//        System.out.println("ids = " + ids);
+//        return R.ok();
+        boolean b = teacherService.removeByIds(ids);
+        if(b){
+            return R.ok();
+        }else{
+            return R.error().message("批量删除失败");
+        }
+    }
+
     //7. 根据id更新讲师
-    @ApiOperation("查询指定讲师")
+    @ApiOperation("更新指定讲师")
     @PostMapping("update")
     public R updateTeacher(@RequestBody Teacher teacher){
         boolean b = teacherService.updateById(teacher);
@@ -108,8 +140,13 @@ public class AdminTeacherController {
     @ApiOperation(value = "删除讲师")
     @DeleteMapping("/remove/{id}")
     public R deleteTeacher(@ApiParam(value = "讲师id", required = true) @PathVariable String id){
+        Teacher teacher = teacherService.getById(id);   //要在删除前获取teacher对象，否则下一行都删掉了查不到！
+
         boolean b = teacherService.removeById(id);
         if(b){
+
+            //删除讲师头像：需要访问service-oss微服务来删除
+            ossFeignClient.deleteFile(teacher.getAvatar(),"avatar");
             return R.ok();
         } else{
             return R.error().message("数据不存在");
