@@ -30,6 +30,7 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:com/atguigu/guli/service/edu/mapper/xml/*.xml
 
 #设置ribbon远程调用超时时长
 ribbon:

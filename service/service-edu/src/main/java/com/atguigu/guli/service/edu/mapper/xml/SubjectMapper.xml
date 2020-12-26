@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.guli.service.edu.mapper.SubjectMapper">
 
+    <resultMap id="selectNestedListResultMap" type="com.atguigu.guli.service.edu.entity.vo.SubjectVo">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <collection property="children" ofType="com.atguigu.guli.service.edu.entity.vo.SubjectVo">
+            <id column="c_id" property="id"/>
+            <result column="c_title" property="title"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectNestedList" resultMap="selectNestedListResultMap">
+        SELECT p.id , p.title ,c.id c_id ,c.title c_title
+        FROM edu_subject p
+        LEFT JOIN edu_subject c
+        ON c.parent_id = p.id
+        WHERE p.parent_id = 0;
+    </select>
+
 </mapper>

@@ -4,7 +4,9 @@ package com.atguigu.guli.service.edu.controller.admin;
 import com.atguigu.guli.service.base.exception.GuliException;
 import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.base.result.ResultCodeEnum;
+import com.atguigu.guli.service.edu.entity.vo.SubjectVo;
 import com.atguigu.guli.service.edu.service.SubjectService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * <p>
@@ -31,7 +34,17 @@ public class AdminSubjectController {
     @Autowired
     SubjectService subjectService;
 
+    //2. 处理课程分类列表显示
+    @ApiOperation(value = "嵌套课程列表显示")
+    @GetMapping("/nested-list")
+    public R nestedList(){
+        List<SubjectVo> subjectVos = subjectService.nestedList();
+        System.out.println("subjectVos = " + subjectVos);
+        return R.ok().data("items", subjectVos);
+    }
+
     //1. 处理课程分类文件上传，保存课程分类到数据库的请求
+    @ApiOperation(value = "批量导入课程分类")
     @PostMapping("import")
     //注意：MultipartFile作为参数时，参数名必须为file（vue写死），如果写其他的，需要额外去指定name属性，这里演示下
     public R batchImportSubjects(@RequestParam("file") MultipartFile subjectFile){
