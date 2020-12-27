@@ -1,0 +1,40 @@
+server:
+  port: 8130 # 服务端口
+
+#提取oss的参数
+aliyun:
+  vod:
+    accessKeyId: LTAI4G9QdS4zyA8HAjAPQ8DM
+    accessKeySecret: jrttTMAPrQhwdoMpA8yAmI6FPBLf46
+    workFlowId: ####TODO
+
+spring:
+  #spring:
+  jackson: #返回json的全局时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  profiles:
+    active: dev # 环境设置：会影响logback-spring.xml中配置的日志输出的级别；也会影响nacos配置中心文件
+  application:
+    name: service-vod # 服务名
+  cloud:
+    nacos:
+      # nacos注册中心地址
+      server-addr: localhost:8848
+    sentinel:
+      filter:
+        url-patterns: /**
+      eager: true   #积极加载：项目启动时会自动将本项目注册到sentinel控制台
+      transport:
+        port: 8081  #本项目和sentinel控制台数据交流时的端口号
+        dashboard: localhost:8080   #sentinel控制面板的地址
+  servlet:
+    multipart:
+      max-file-size: 1024MB #上传的单个表单项文件的大小
+      max-request-size: 1024MB  #一次请求所有的文件表单项总大小的限制
+
+#设置日志输出级别为error：可选fatal（一般不用），error，warning，info（一般测试时用），debug（一般开发时用，可显示参数）
+#logging:
+#  level:
+#    com.atguigu.guli.service.edu.controller.ChapterController: debug
+#    root: error

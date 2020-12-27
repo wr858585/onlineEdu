@@ -2,7 +2,7 @@
 <configuration  scan="true" scanPeriod="10 seconds">
 
     <contextName>logback</contextName>
-    <property name="log.path" value="D:/dev/logs/guli-parent/service/service-oss"/>
+    <property name="log.path" value="D:/dev/logs/guli-parent/service/service-vod"/>
 
     <!--控制台日志格式：彩色日志-->
     <!-- magenta:洋红 -->
