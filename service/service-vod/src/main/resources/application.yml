@@ -6,7 +6,8 @@ aliyun:
   vod:
     accessKeyId: LTAI4G9QdS4zyA8HAjAPQ8DM
     accessKeySecret: jrttTMAPrQhwdoMpA8yAmI6FPBLf46
-    workFlowId: ####TODO
+    workFlowId: 01b2dd27f1b442b1d201e4d7195e80f0
+    templateGroupId: 447b1667323e4e7a579e6714863859d4
 
 spring:
   #spring:

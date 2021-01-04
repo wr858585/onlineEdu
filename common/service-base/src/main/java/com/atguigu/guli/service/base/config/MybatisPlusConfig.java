@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * spring中将javabean注入到容器中的方式：
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * 3. 在组件类的方法上标注@Bean注解，可以将方法的返回值对象注入到容器中
  */
 
+@EnableTransactionManagement
 @Configuration
 //指定扫描mapper接口的基本包
 @MapperScan(basePackages = {"com.atguigu.guli.service.*.mapper"})

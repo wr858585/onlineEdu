@@ -18,12 +18,13 @@ public class MediaController {
 
     //1. 上传视频到vod
     @PostMapping("/upload")
-    public R upload(MultipartFile file){
+    public R upload(MultipartFile file, String fileName){
         //抽取到业务层：
 //        InputStream inputStream = file.getInputStream();
 //        String filename = file.getOriginalFilename();
+        String videoName = file.getOriginalFilename();
         //获取上传之后的视频id
-        String videoId = mediaService.upload(file);
+        String videoId = mediaService.upload(file, videoName);
         return R.ok().data("videoId", videoId);
     }
 
