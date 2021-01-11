@@ -3,17 +3,26 @@ package com.atguigu.guli.service.edu.service.impl;
 import com.atguigu.guli.service.edu.entity.Course;
 import com.atguigu.guli.service.edu.entity.CourseDescription;
 import com.atguigu.guli.service.edu.entity.form.CourseInfoForm;
+import com.atguigu.guli.service.edu.entity.vo.CourseApiVo;
+import com.atguigu.guli.service.edu.entity.vo.CourseInfoApiVo;
 import com.atguigu.guli.service.edu.entity.vo.CourseInfoVo;
 import com.atguigu.guli.service.edu.entity.vo.CoursePublishVo;
 import com.atguigu.guli.service.edu.mapper.CourseDescriptionMapper;
 import com.atguigu.guli.service.edu.mapper.CourseMapper;
 import com.atguigu.guli.service.edu.service.CourseService;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -86,5 +95,28 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         QueryWrapper<Object> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("c.id",courseId);
         return baseMapper.selectCourseVoById(queryWrapper);
+    }
+
+    @Override
+    public List<CourseApiVo> getCourses() {
+        //查询指定列的值，每一行对应一个map
+//        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.select("id","title","cover","price","view_count","buy_count");
+//        List<Map<String, Object>> maps = baseMapper.selectMaps(queryWrapper);
+//        List<CourseApiVo> courseApiVos = new ArrayList<>(maps.size());
+        List<CourseApiVo> courseApiVos = baseMapper.getCourseApiVos();
+//        for (Map<String, Object> map : maps) {
+//            CourseApiVo courseApiVo = new CourseApiVo();
+//            BeanUtils.copyProperties(map,courseApiVo);
+//            (map, courseApiVo);
+//            System.out.println("courseApiVo = " + courseApiVo);
+//            courseApiVos.add(courseApiVo);
+//        }
+        return courseApiVos;
+    }
+
+    @Override
+    public CourseInfoApiVo getCourseInfoApiVo(String id) {
+        return baseMapper.getCourseInfoApiVoByCourseId(id);
     }
 }

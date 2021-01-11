@@ -21,6 +21,8 @@ public class ChapterVo {
     @ApiModelProperty(value = "显示排序")
     private Integer sort;
 
+    private List<Video> children;
+
     //video信息：chapter和video是一对多的关系，直接封装到children
 
 //    private String id;
@@ -33,6 +35,5 @@ public class ChapterVo {
 //
 //    private Boolean free;
 
-    private List<Video> children;
 
 }

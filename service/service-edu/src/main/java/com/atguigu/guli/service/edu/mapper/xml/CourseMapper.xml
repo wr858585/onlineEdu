@@ -2,6 +2,62 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.guli.service.edu.mapper.CourseMapper">
 
+    <resultMap id="getCourseInfoApiVoByCourseIdResultMap" type="com.atguigu.guli.service.edu.entity.vo.CourseInfoApiVo">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="lesson_num" property="lessonNum"/>
+        <result column="cover" property="cover"/>
+        <result column="buy_count" property="buyCount"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="description" property="description"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="intro" property="intro"/>
+        <result column="avatar" property="avatar"/>
+        <result column="level" property="level"/>
+        <result column="subject_level_one_id" property="subjectLevelOneId"/>
+        <result column="subject_level_one" property="subjectLevelOne"/>
+        <result column="subject_level_two_id" property="subjectLevelTwoId"/>
+        <result column="subject_level_two" property="subjectLevelTwo"/>
+        <collection property="chapters" ofType="com.atguigu.guli.service.edu.entity.vo.ChapterVo">
+            <id column="chapter_id" property="id"/>
+            <result column="chapter_title" property="title"/>
+            <collection property="children" ofType="com.atguigu.guli.service.edu.entity.Video">
+                <id column="video_id" property="id"/>
+                <result column="is_free" property="free"/>
+                <result column="video_title" property="title"/>
+                <result column="video_original_name" property="videoOriginalName"/>
+                <result column="video_source_id" property="videoSourceId"/>
+            </collection>
+        </collection>
+
+    </resultMap>
+
+    <select id="getCourseInfoApiVoByCourseId" resultMap="getCourseInfoApiVoByCourseIdResultMap">
+        SELECT
+        t1.`id`,t1.`title`,t1.`price`,t1.`lesson_num`,t1.`cover`,t1.`buy_count`,t1.`view_count`,
+        t2.`description`,
+        t3.`id` AS teacher_id,t3.`name` AS teacher_name,t3.`intro`,t3.`avatar`, t3.`level`,
+        t4.`id` AS subject_level_one_id,t4.`title` AS subject_level_one,t4.`parent_id` AS subject_level_two_id,
+        t5.`title` AS subject_level_two,
+        t6.`title` AS chapter_title, t6.`id` AS chapter_id,
+        t7.`id` AS video_id,t7.`is_free`,t7.`title` AS video_title,t7.`video_original_name`,t7.`video_source_id`
+        FROM edu_course t1
+        LEFT JOIN edu_course_description t2
+        ON t1.`id` = t2.`id`
+        LEFT JOIN edu_teacher t3
+        ON t1.`teacher_id` = t3.`id`
+        LEFT JOIN edu_subject t4
+        ON t1.`subject_id` = t4.`id`
+        LEFT JOIN edu_subject t5
+        ON t4.`parent_id` = t5.`id`
+        LEFT JOIN edu_chapter t6
+        ON t1.`id` = t6.`course_id`
+        LEFT JOIN edu_video t7
+        ON t6.`id` = t7.`chapter_id`
+        WHERE t1.`id` = #{id};
+    </select>
+
     <select id="selectCourseVoById" resultType="com.atguigu.guli.service.edu.entity.vo.CoursePublishVo">
    SELECT
     c.id,
@@ -19,5 +75,11 @@
     LEFT JOIN edu_subject s2 ON c.subject_id = s2.id
     ${ew.customSqlSegment}
     </select>
-    
+
+ <select id="getCourseApiVos" resultType="com.atguigu.guli.service.edu.entity.vo.CourseApiVo">
+    SELECT id, title, price, cover, buy_count, view_count
+    FROM edu_course
+    WHERE cover IS NOT NULL;
+ </select>
+
 </mapper>

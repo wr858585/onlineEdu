@@ -36,7 +36,7 @@ public class MediaController {
     }
 
     //3. 获取加密视频播放凭证
-    @GetMapping("/getPlayAuth/{videoId}")
+    @GetMapping("getPlayAuth/{videoId}")
     public R getPlayAuth(@PathVariable String videoId){
         String playAuth = mediaService.getPlayAuth(videoId);
         return R.ok().data("playAuth",playAuth);    //一般用item的key描述对象，字段的话具体些吧
